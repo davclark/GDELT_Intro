@@ -35,7 +35,7 @@ PATH = 'GDELT.1979-2012.reduced/'
 # We don't need a "robust" date parser, as we know the format, so we pass in
 # this custom parser (actually *too* robust, as it will catch *all* exeptions!).
 # I verified identical behavior on the 1979 data
-# The speedup on my computer goes from 32 seconds to under 3 to read the file
+# The speedup on my 2009 MacBook Air goes from 32 seconds to under 3 to read the 1979 file
 def parse_date(date_string):
     # Just convert to monthly data
     try:
