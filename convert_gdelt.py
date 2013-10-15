@@ -27,7 +27,7 @@ format of these columns, but this is the full list:
 
 
 from functools import partial
-from datetime import datetime, MINYEAR
+from datetime import date, MINYEAR
 import pandas as pd
 
 PATH = 'GDELT.1979-2012.reduced/'
@@ -41,11 +41,11 @@ def parse_date(date_string):
     try:
         year = int(date_string[:4])
         month = int(date_string[4:6])
-        dat = int(date_string[6:8])
-        return datetime(year, month, dat)
+        day = int(date_string[6:8])
+        return date(year, month, day)
     except:
         print 'funny date string: ', date_string
-        return datetime(MINYEAR,1,1)
+        return date(MINYEAR,1,1)
 
 # This is the "standard" way to use generic_parser
 gp = pd.io.date_converters.generic_parser
@@ -61,7 +61,9 @@ for year in range(1979, 2013):
     # readable
     data = pd.read_csv(PATH + str(year) + ".reduced.txt", sep='\t',
                        dtype={'EventCode': str, 'QuadCategory': str},
-                       parse_dates=['Day'], date_parser=parser)
+                       parse_dates=['Day'], date_parser=parser,
+                       min_itemsize={'EventCode': 4, 'QuadCategory': 1,
+                                     'Actor1Code': 18, 'Actor2Code': 18} )
 
     # We aren't actually appending here, but this is how you create data_columns
     store.append('r' + str(year), data, data_columns=True)
